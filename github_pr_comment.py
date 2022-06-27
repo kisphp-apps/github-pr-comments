@@ -72,12 +72,13 @@ class GithubPrManager:
         with open(filename, 'r') as file:
             content = file.read()
 
-        print('get comments')
-        for comment in self._get_issue_comments(issue_id):
-            print(f'found comment {comment.get("id")}')
-            if (GithubPrManager.PR_COMMENT_MARKUP) in comment.get('body'):
-                print(f'delete comment {comment.get("id")}')
-                self._delete_issue_comment(comment.get('id'))
+        if os.getenv('GITHUB_PR_SKIP_DELETE') != True:
+            print('get comments')
+            for comment in self._get_issue_comments(issue_id):
+                print(f'found comment {comment.get("id")}')
+                if (GithubPrManager.PR_COMMENT_MARKUP) in comment.get('body'):
+                    print(f'delete comment {comment.get("id")}')
+                    self._delete_issue_comment(comment.get('id'))
 
         for message in self._split_content(content):
             print(f'post my comment "{message}" to issue {issue_id}')
