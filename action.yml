@@ -4,14 +4,17 @@ inputs:
     pr_number:
         description: "Message to be posted as comment"
         required: true
-        default: ""
     filename:
         description: "Filename to read the content and post it as message to PR"
         required: true
-        default: ""
+    title:
+        description: "Comment title"
+        required: false
+        default: "Github PR comment"
 runs:
     using: "docker"
     image: "Dockerfile"
     args:
         - ${{ inputs.pr_number }}
         - ${{ inputs.filename }}
+        - ${{ inputs.title }}

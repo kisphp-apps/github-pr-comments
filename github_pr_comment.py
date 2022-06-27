@@ -68,7 +68,7 @@ class GithubPrManager:
     def __init__(self, request_manager: RequestManager):
         self.request = request_manager
 
-    def post_comment(self, issue_id, filename):
+    def post_comment(self, issue_id, filename, comment_title):
         with open(filename, 'r') as file:
             content = file.read()
 
@@ -82,6 +82,7 @@ class GithubPrManager:
         for message in self._split_content(content):
             print(f'post my comment "{message}" to issue {issue_id}')
             comment_message = f"""
+{comment_title}
 {GithubPrManager.PR_COMMENT_MARKUP}
 <details>
   <summary>Click to expand!</summary>
@@ -121,5 +122,6 @@ if __name__ == '__main__':
     g = GithubPrManager(rm)
     g.post_comment(
         sys.argv[1],
-        sys.argv[2]
+        sys.argv[2],
+        sys.argv[3]
     )
