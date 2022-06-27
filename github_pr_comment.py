@@ -101,7 +101,9 @@ class GithubPrManager:
         return [split_content]
 
     def _get_issue_comments(self, issue_id):
-        return self.request.get_comments(issue_id)
+        comments = self.request.get_comments(issue_id)
+
+        return comments or []
 
     def _delete_issue_comment(self, comment_id):
         return self.request.delete_comment(comment_id)
