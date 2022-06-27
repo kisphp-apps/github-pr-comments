@@ -72,7 +72,7 @@ class GithubPrManager:
                 self._delete_issue_comment(comment.get('id'))
 
         for message in self._split_content(content):
-            print(f'post my comment {message} to issue {issue_id}')
+            print(f'post my comment "{message}" to issue {issue_id}')
             comment_message = f"""
 {GithubPrManager.PR_COMMENT_MARKUP}
 <details>
