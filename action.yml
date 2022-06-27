@@ -1,12 +1,17 @@
 name: "PR comments"
 description: "Add multiple collapsible comments on PRs and issues in github"
 inputs:
-    message:
+    pr_number:
         description: "Message to be posted as comment"
+        required: true
+        default: ""
+    filename:
+        description: "Filename to read the content and post it as message to PR"
         required: true
         default: ""
 runs:
     using: "docker"
     image: "Dockerfile"
     args:
-        - ${{ inputs.message }}
+        - ${{ inputs.pr_number }}
+        - ${{ inputs.filename }}
