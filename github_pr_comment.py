@@ -122,6 +122,4 @@ if __name__ == '__main__':
     g.post_comment(
         sys.argv[1],
         sys.argv[2]
-        # os.getenv('GITHUB_PR_NUMBER'),
-        # os.getenv('GITHUB_PR_COMMENT_FILENAME')
     )
