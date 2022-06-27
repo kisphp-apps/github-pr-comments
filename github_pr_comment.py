@@ -55,7 +55,11 @@ class RequestManager:
             "body": message
         }).encode('utf-8')
 
-        return self.http.request('POST', url, headers=self.headers, body=body_content)
+        response = self.http.request('POST', url, headers=self.headers, body=body_content)
+
+        if response.status != 201:
+            print(f'Response status: {response.status}')
+            print(f'Response reason: {response.reason}')
 
 
 class GithubPrManager:
