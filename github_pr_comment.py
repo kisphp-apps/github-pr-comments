@@ -65,7 +65,7 @@ class GithubPrManager:
 
     def post_comment(self, issue_id, filename):
         with open(filename, 'r') as file:
-            content = str(file.readlines()).encode('utf-8')
+            content = file.read().encode('utf-8')
 
         print('get comments')
         for comment in self._get_issue_comments(issue_id):
