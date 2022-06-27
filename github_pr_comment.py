@@ -2,6 +2,7 @@
 
 import json
 import os
+import sys
 import urllib3
 
 
@@ -113,4 +114,9 @@ if __name__ == '__main__':
         os.getenv('GITHUB_TOKEN')
     )
     g = GithubPrManager(rm)
-    g.post_comment(os.getenv('GITHUB_PR_NUMBER'), os.getenv('GITHUB_PR_COMMENT_FILENAME'))
+    g.post_comment(
+        sys.argv[1],
+        sys.argv[2]
+        # os.getenv('GITHUB_PR_NUMBER'),
+        # os.getenv('GITHUB_PR_COMMENT_FILENAME')
+    )
