@@ -63,7 +63,10 @@ class GithubPrManager:
     def __init__(self, request_manager: RequestManager):
         self.request = request_manager
 
-    def post_comment(self, issue_id, content):
+    def post_comment(self, issue_id, filename):
+        with open(filename, 'r') as file:
+            content = str(file.readlines()).encode('utf-8')
+
         print('get comments')
         for comment in self._get_issue_comments(issue_id):
             print(f'found comment {comment.get("id")}')
@@ -110,4 +113,4 @@ if __name__ == '__main__':
         os.getenv('GITHUB_TOKEN')
     )
     g = GithubPrManager(rm)
-    g.post_comment(17, "hello world again 2")
+    g.post_comment(os.getenv('GITHUB_PR_NUMBER'), os.getenv('GITHUB_PR_COMMENT_FILENAME'))
