@@ -7,13 +7,13 @@ import urllib3
 
 
 class RequestManager:
-    def __init__(self, github_owner, github_repo, github_token):
+    def __init__(self, github_repositoy, github_token):
         self.http = urllib3.PoolManager()
         self.headers = {
             'Accept': "application/vnd.github.v3+json",
             'Authorization': f'token {github_token}'
         }
-        self.github_base_url = f"https://api.github.com/repos/{github_owner}/{github_repo}/issues"
+        self.github_base_url = f"https://api.github.com/repos/{github_repositoy}/issues"
 
     def get_comments(self, issue_number):
         """
@@ -111,8 +111,7 @@ class GithubPrManager:
 
 if __name__ == '__main__':
     rm = RequestManager(
-        os.getenv('GITHUB_OWNER'),
-        os.getenv('GITHUB_REPO'),
+        os.getenv('GITHUB_REPOSITORY'),
         os.getenv('GITHUB_TOKEN')
     )
     g = GithubPrManager(rm)
