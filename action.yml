@@ -12,8 +12,9 @@ inputs:
         required: false
         default: "Github PR comment"
 runs:
-    using: "docker"
-    image: "Dockerfile"
+#    using: "docker"
+#    image: "Dockerfile"
+    using: "liveintent/github-pr-comments@0.1.0"
     args:
         - ${{ inputs.pr_number }}
         - ${{ inputs.filename }}
