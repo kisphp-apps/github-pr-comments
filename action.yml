@@ -1,0 +1,21 @@
+name: "PR comments"
+description: "Add multiple collapsible comments on PRs and issues in github"
+inputs:
+    pr_number:
+        description: "Message to be posted as comment"
+        required: true
+    filename:
+        description: "Filename to read the content and post it as message to PR"
+        required: true
+    title:
+        description: "Comment title"
+        required: false
+        default: "Github PR comment"
+runs:
+#    using: "docker"
+#    image: "Dockerfile"
+    using: "liveintent/github-pr-comments@0.1.0"
+    args:
+        - ${{ inputs.pr_number }}
+        - ${{ inputs.filename }}
+        - ${{ inputs.title }}
