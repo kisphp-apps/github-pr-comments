@@ -53,17 +53,18 @@ class RequestManager:
 
         body_content = json.dumps({
             "body": message
-        }).encode('utf-8')
+        })
 
+        print(f"Post message url: {url}")
         response = self.http.request('POST', url, headers=self.headers, body=body_content)
 
-        if response.status != 201:
-            print(f'Response status: {response.status}')
-            print(f'Response reason: {response.reason}')
+        print(f'Response status: {response.status}')
+        print(f'Response reason: {response.reason}')
 
 
 class GithubPrManager:
     PR_COMMENT_MARKUP = '<!--PR_COMMENT-->'
+    GITHUB_COMMENT_MAX_CHARS = 241000
 
     def __init__(self, request_manager: RequestManager):
         self.request = request_manager
@@ -80,31 +81,38 @@ class GithubPrManager:
                     print(f'delete comment {comment.get("id")}')
                     self._delete_issue_comment(comment.get('id'))
 
-        for message in self._split_content(content):
-            print(f'post my comment "{message}" to issue {issue_id}')
+        for message in self.split_content(content):
+            print(f'post the comment to issue {issue_id}')
+            pre_start = ''
+            pre_end = ''
+            if bool(os.getenv('GITHUB_PR_COMMENT_PRE')) is True:
+                pre_start = '<pre>'
+                pre_end = '</pre>'
+
             comment_message = f"""
 {comment_title}
 {GithubPrManager.PR_COMMENT_MARKUP}
 <details>
   <summary>Click to expand!</summary>
-  
-  {message}
+
+  {pre_start}{message}{pre_end}
 </details>
 
 """
             self.request.post_comment(issue_id, comment_message)
 
-    def _split_content(self, content):
-        if len(content) < 241000:
+    def split_content(self, content):
+        print(self.GITHUB_COMMENT_MAX_CHARS)
+        if len(content) < self.GITHUB_COMMENT_MAX_CHARS:
             return [content]
 
         split_content = []
-        while len(content) > 241000:
-            sliced = content[:24100]
+        while len(content) > 0:
+            sliced = content[:self.GITHUB_COMMENT_MAX_CHARS]
             split_content.append(sliced)
-            content = content[241001:]
+            content = content[self.GITHUB_COMMENT_MAX_CHARS:]
 
-        return [split_content]
+        return split_content
 
     def _get_issue_comments(self, issue_id):
         comments = self.request.get_comments(issue_id)
